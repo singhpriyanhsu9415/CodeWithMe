@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: codewithme
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: NODE_OPTIONS=--max_old_space_size=512 node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
