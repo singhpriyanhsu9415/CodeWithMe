@@ -11,7 +11,7 @@ import {
     useParams,
 } from 'react-router-dom';
 
-const EditorPage = () => {
+const EditorPage = () => {      // this is the main editor page which holds everything
     const socketRef = useRef(null);
     const codeRef = useRef(null);
     const location = useLocation();
@@ -23,7 +23,7 @@ const EditorPage = () => {
     useEffect(() => {
         
         const init = async () => {
-            socketRef.current = await initSocket();
+            socketRef.current = await initSocket();   // initializing a socket  when connected to a backend server
             socketRef.current.on('connect_error', (err) => handleErrors(err));
             socketRef.current.on('connect_failed', (err) => handleErrors(err));
 
@@ -33,7 +33,7 @@ const EditorPage = () => {
                 reactNavigator('/');
             }
 
-            socketRef.current.emit(ACTIONS.JOIN, {
+            socketRef.current.emit(ACTIONS.JOIN, {   // sending joing info to backend
                 roomId,
                 username: location.state?.username,
             });
@@ -42,11 +42,11 @@ const EditorPage = () => {
             socketRef.current.on(
                 ACTIONS.JOINED,
                 ({ clients, username, socketId }) => {
-                    if (username !== location.state?.username) {
+                    if (username !== location.state?.username) {   // for different users only
                         toast.success(`${username} joined the room.`);
                         console.log(`${username} joined`);
                     }
-                    setClients(clients);
+                    setClients(clients);    // updating all the clients
                     socketRef.current.emit(ACTIONS.SYNC_CODE, {
                         code: codeRef.current,
                         socketId,

@@ -8,10 +8,10 @@ import 'codemirror/addon/edit/closebrackets';
 import ACTIONS from '../Actions';
 
 const Editor = ({ socketRef, roomId, onCodeChange }) => {
-    const editorRef = useRef(null);
+    const editorRef = useRef(null);      // editor  instance
     useEffect(() => {
         async function init() {
-            editorRef.current = Codemirror.fromTextArea(
+            editorRef.current = Codemirror.fromTextArea(  // codemirror instance
                 document.getElementById('realtimeEditor'),
                 {
                     mode: { name: 'javascript', json: true },
@@ -22,12 +22,12 @@ const Editor = ({ socketRef, roomId, onCodeChange }) => {
                 }
             );
 
-            editorRef.current.on('change', (instance, changes) => {
+            editorRef.current.on('change', (instance, changes) => {   
                 const { origin } = changes;
-                const code = instance.getValue();
+                const code = instance.getValue();    // storing  all the typing changes
                 onCodeChange(code);
                 if (origin !== 'setValue') {
-                    socketRef.current.emit(ACTIONS.CODE_CHANGE, {
+                    socketRef.current.emit(ACTIONS.CODE_CHANGE, {   // current user sending changes to backend
                         roomId,
                         code,
                     });
@@ -39,7 +39,7 @@ const Editor = ({ socketRef, roomId, onCodeChange }) => {
 
     useEffect(() => {
         if (socketRef.current) {
-            socketRef.current.on(ACTIONS.CODE_CHANGE, ({ code }) => {
+            socketRef.current.on(ACTIONS.CODE_CHANGE, ({ code }) => {   // listening changes done by other users
                 if (code !== null) {
                     editorRef.current.setValue(code);
                 }
