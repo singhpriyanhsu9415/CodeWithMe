@@ -1,3 +1,13 @@
+node_modules
+build
+.git
+.github
+Dockerfile
+docker-compose.yml
+npm-debug.log
+.env
+*.md
+*.log
 # Dependencies
 node_modules
 npm-debug.log
