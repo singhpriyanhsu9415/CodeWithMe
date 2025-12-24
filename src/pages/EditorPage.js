@@ -17,6 +17,7 @@ const EditorPage = () => {      // this is the main editor page which holds ever
     const location = useLocation();
     const { roomId } = useParams();
     const reactNavigator = useNavigate();
+    const username = location.state?.username;
     const [clients, setClients] = useState([]);
    
 
@@ -35,16 +36,16 @@ const EditorPage = () => {      // this is the main editor page which holds ever
 
             socketRef.current.emit(ACTIONS.JOIN, {   // sending joing info to backend
                 roomId,
-                username: location.state?.username,
+                username,
             });
 
             // Listening for joined event
             socketRef.current.on(
                 ACTIONS.JOINED,
-                ({ clients, username, socketId }) => {
-                    if (username !== location.state?.username) {   // for different users only
-                        toast.success(`${username} joined the room.`);
-                        console.log(`${username} joined`);
+                ({ clients, username: joinedUsername, socketId }) => {
+                    if (joinedUsername !== username) {   // for different users only
+                        toast.success(`${joinedUsername} joined the room.`);
+                        console.log(`${joinedUsername} joined`);
                     }
                     setClients(clients);    // updating all the clients
                     socketRef.current.emit(ACTIONS.SYNC_CODE, {
@@ -77,7 +78,7 @@ const EditorPage = () => {      // this is the main editor page which holds ever
             }
         };
         
-    }, []);
+    }, [username, reactNavigator, roomId]);
 
     async function copyRoomId() {
         try {

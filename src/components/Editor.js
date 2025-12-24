@@ -27,31 +27,34 @@ const Editor = ({ socketRef, roomId, onCodeChange }) => {
                 const code = instance.getValue();    // storing  all the typing changes
                 onCodeChange(code);
                 if (origin !== 'setValue') {
-                    socketRef.current.emit(ACTIONS.CODE_CHANGE, {   // current user sending changes to backend
-                        roomId,
-                        code,
-                    });
+                    if (socketRef && socketRef.current) {
+                        socketRef.current.emit(ACTIONS.CODE_CHANGE, {   // current user sending changes to backend
+                            roomId,
+                            code,
+                        });
+                    }
                 }
             });
         }
         init();
-    }, []);
+    }, [onCodeChange, roomId, socketRef]);
 
     useEffect(() => {
-        if (socketRef.current) {
-            socketRef.current.on(ACTIONS.CODE_CHANGE, ({ code }) => {   // listening changes done by other users
+        const socket = socketRef && socketRef.current;
+        if (socket) {
+            socket.on(ACTIONS.CODE_CHANGE, ({ code }) => {   // listening changes done by other users
                 if (code !== null) {
-                    editorRef.current.setValue(code);
+                    if (editorRef.current) editorRef.current.setValue(code);
                 }
             });
         }
-    
+
         return () => {
-            if (socketRef.current) {
-                socketRef.current.off(ACTIONS.CODE_CHANGE);
+            if (socket) {
+                socket.off(ACTIONS.CODE_CHANGE);
             }
         };
-    }, [socketRef.current]);
+    }, [socketRef]);
 
     return <textarea id="realtimeEditor"></textarea>;
 };
