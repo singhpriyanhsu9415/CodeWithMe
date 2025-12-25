@@ -35,6 +35,12 @@ CodeWithMe is a **real-time collaborative code editor** that allows multiple use
 
 ---
 
+## Screenshots
+
+<img width="1912" height="975" alt="Screenshot 2025-12-25 151253" src="https://github.com/user-attachments/assets/9971c403-746a-4c3e-93e9-95394dd56f3e" />
+<img width="1915" height="976" alt="Screenshot 2025-12-25 151425" src="https://github.com/user-attachments/assets/a9cde1c6-dad0-491f-846a-04d426998219" />
+<img width="286" height="311" alt="Screenshot 2025-12-25 151446" src="https://github.com/user-attachments/assets/f46d8730-2de4-4951-962f-bf5e94648c36" />
+
 ## 🧠 How It Works
 
 1. A user creates or joins a room using a **unique Room ID**
